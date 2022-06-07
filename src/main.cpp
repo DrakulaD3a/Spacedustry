@@ -14,8 +14,7 @@ void RenderFrame(float dt);
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 576
 
-// Street texture
-Sprite street;
+SDL_Point mouse;
 
 //=============================================================================
 int main(int argc, char* argv[])
@@ -30,12 +29,10 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	street = LoadSprite("assets/cyberpunk-street.png");
 
 	// Push functions to the game loop
 	StartLoop(Update, RenderFrame);
 
-	FreeSprite(street);
 	CleanUp();
 	return 0;
 }
@@ -44,8 +41,9 @@ int main(int argc, char* argv[])
 
 void Update(float dt)
 {
-	// Change subsystem of project from Windows to Console
-	// in order to see the stderr output
+	GetMousePosition(&mouse.x, &mouse.y);
+	printf("%d %d\n", mouse.x, mouse.y);
+
 	if (IsKeyDown(SDL_SCANCODE_ESCAPE))
 		ExitGame();
 }
@@ -56,13 +54,5 @@ void RenderFrame(float interpolation)
 	SDL_SetRenderDrawColor(gRenderer, 65, 105, 225, 255);
 	SDL_RenderClear(gRenderer);
 
-	// Draw sprite (scaled by factor of 3)
-	int pixelAmp = 3;
-	SDL_Rect backgroundRect = {
-		0,
-		0,
-		street.sourceRect.w * pixelAmp,
-		street.sourceRect.h * pixelAmp
-	};
-	SDL_RenderCopy(gRenderer, street.texture, NULL, &backgroundRect);
+	
 }
