@@ -1,5 +1,6 @@
 #include "engine.h"
 #include "sprite.h"
+#include "player.h"
 #include "SDL.h"
 #include "SDL_image.h"
 #include "SDL_mixer.h"
@@ -11,10 +12,11 @@
 void Update(float dt);
 void RenderFrame(float dt);
 
-#define WINDOW_WIDTH 800
-#define WINDOW_HEIGHT 576
+#define WW 1920
+#define WH 1080
 
 SDL_Point mouse;
+Player player = { {WW / 2,WH / 2,64,64}, 2 };
 
 //=============================================================================
 int main(int argc, char* argv[])
@@ -24,11 +26,10 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	if (!CreateWindow("The Game", WINDOW_WIDTH, WINDOW_HEIGHT))
+	if (!CreateWindow("The Game", WW, WH))
 	{
 		return 1;
 	}
-
 
 	// Push functions to the game loop
 	StartLoop(Update, RenderFrame);
@@ -46,6 +47,19 @@ void Update(float dt)
 
 	if (IsKeyDown(SDL_SCANCODE_ESCAPE))
 		ExitGame();
+
+	if (IsKeyDown(SDL_SCANCODE_W))
+		player.shell.y -= player.speed;
+	if (IsKeyDown(SDL_SCANCODE_A))
+		player.shell.x -= player.speed;
+	if (IsKeyDown(SDL_SCANCODE_S))
+		player.shell.y += player.speed;
+	if (IsKeyDown(SDL_SCANCODE_D))
+		player.shell.x += player.speed;
+
+
+
+
 }
 
 void RenderFrame(float interpolation)
@@ -54,5 +68,6 @@ void RenderFrame(float interpolation)
 	SDL_SetRenderDrawColor(gRenderer, 65, 105, 225, 255);
 	SDL_RenderClear(gRenderer);
 
-	
+	SDL_SetRenderDrawColor(gRenderer, 0, 255, 0, 255);
+	SDL_RenderFillRect(gRenderer, &player.shell);
 }

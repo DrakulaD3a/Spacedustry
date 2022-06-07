@@ -10,11 +10,13 @@ set(SOURCES
 	src/sprite.h
 	src/sprite.cpp
 	src/main.cpp
+	src/player.h
 )
 
 source_group("Headers" FILES
 	src/engine.h
 	src/sprite.h
+	src/player.h
 )
 
 # Set a default build type if none was specified
