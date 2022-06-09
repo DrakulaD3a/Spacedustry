@@ -1,5 +1,4 @@
 #include "engine.h"
-#include "sprite.h"
 #include "player.h"
 #include "SDL.h"
 #include "SDL_image.h"
@@ -131,7 +130,7 @@ void RenderFrame(float interpolation)
 	SDL_SetRenderDrawColor(gRenderer, 65, 105, 225, 255);
 	SDL_RenderClear(gRenderer);
 
-	SDL_RenderCopy(gRenderer, Backgroung.texture, 0, &background);
+	SDL_RenderCopy(gRenderer, Backgroung, 0, &background);
 
 	SDL_SetRenderDrawColor(gRenderer, 0, 255, 0, 255);
 	SDL_RenderFillRect(gRenderer, &player.shell);
