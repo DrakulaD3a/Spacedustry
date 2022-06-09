@@ -17,9 +17,9 @@ void RenderFrame(float dt);
 #define WH 1080
 
 SDL_Point mouse;
-Player player = { { WW / 2, WH / 2, 64, 64 }, 4 };
+Player player = { { WW / 2, WH / 2, 64, 64 }, 4, WW / 2 - player.shell.w / 2 , WH / 2 - player.shell.h / 2 };
 SDL_Rect background = { -960, -540, 2 * 3840, 2 * 2160 };
-Sprite Backgroung;
+SDL_Texture* Backgroung;
 time_t timer = time(NULL) + 0.5;
 
 //=============================================================================
@@ -35,9 +35,7 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	Backgroung = LoadSprite("assets/Background.png");
-
-	player.x = WW / 2 - player.shell.w / 2; player.y = WH / 2 - player.shell.h / 2;
+	Backgroung = IMG_LoadTexture(gRenderer, "assets/Background.png");
 
 	StartLoop(Update, RenderFrame);
 
@@ -62,7 +60,7 @@ void Update(float dt)
 		player.y -= player.speed;
 		if (player.y <= 400)
 		{
-			background.y++; player.y += (float)player.speed / (player.y / 200 + 1);
+			background.y += player.speed; player.y += (float)player.speed / (player.y / 200 + 1);
 		}
 	}
 	if (IsKeyDown(SDL_SCANCODE_A))
@@ -70,7 +68,7 @@ void Update(float dt)
 		player.x -= player.speed;
 		if (player.x <= 400)
 		{
-			background.x++; player.x += (float)player.speed / (player.x / 200 + 1);
+			background.x += player.speed; player.x += (float)player.speed / (player.x / 200 + 1);
 		}
 	}
 	if (IsKeyDown(SDL_SCANCODE_S))
@@ -78,7 +76,7 @@ void Update(float dt)
 		player.y += player.speed;
 		if (WH - (player.y + player.shell.h) <= 400)
 		{
-			background.y--; player.y -= (float)player.speed / ((WH - (player.y + player.shell.h)) / 200 + 1);
+			background.y -= player.speed; player.y -= (float)player.speed / ((WH - (player.y + player.shell.h)) / 200 + 1);
 		}
 	}
 	if (IsKeyDown(SDL_SCANCODE_D))
@@ -86,7 +84,7 @@ void Update(float dt)
 		player.x += player.speed;
 		if (WW - (player.x + player.shell.w) <= 400)
 		{
-			background.x--; player.x -= (float)player.speed / ((WW - (player.x + player.shell.w)) / 200 + 1);
+			background.x -= player.speed; player.x -= (float)player.speed / ((WW - (player.x + player.shell.w)) / 200 + 1);
 		}
 	}
 	if(IsKeyReleased(SDL_SCANCODE_W) || IsKeyReleased(SDL_SCANCODE_A) || IsKeyReleased(SDL_SCANCODE_S) || IsKeyReleased(SDL_SCANCODE_D))
