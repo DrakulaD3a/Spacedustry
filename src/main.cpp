@@ -1,5 +1,6 @@
 #include "engine.h"
 #include "player.h"
+#include "asteroid.h"
 #include "SDL.h"
 #include "SDL_image.h"
 #include "SDL_mixer.h"
@@ -17,6 +18,7 @@ void RenderFrame(float dt);
 
 SDL_Point mouse;
 Player player = { { WW / 2, WH / 2, 64, 64 }, 4, WW / 2 - player.shell.w / 2 , WH / 2 - player.shell.h / 2 };
+asteroid a1(10, 12, 64, 64, "Fe", "assets/meteor1.png");
 SDL_Rect background = { -960, -540, 2 * 3840, 2 * 2160 };
 SDL_Texture* Backgroung;
 time_t timer = time(NULL) + 0.5;
@@ -57,9 +59,9 @@ void Update(float dt)
 	if (IsKeyDown(SDL_SCANCODE_W))
 	{
 		player.y -= player.speed;
-		if (player.y <= 400)
+		if (player.y <= 200)
 		{
-			background.y += player.speed; player.y += (float)player.speed / (player.y / 200 + 1);
+			background.y += player.speed; player.y += (float)player.speed / (player.y / 100 + 1);
 		}
 	}
 	if (IsKeyDown(SDL_SCANCODE_A))
@@ -73,9 +75,9 @@ void Update(float dt)
 	if (IsKeyDown(SDL_SCANCODE_S))
 	{
 		player.y += player.speed;
-		if (WH - (player.y + player.shell.h) <= 400)
+		if (WH - (player.y + player.shell.h) <= 200)
 		{
-			background.y -= player.speed; player.y -= (float)player.speed / ((WH - (player.y + player.shell.h)) / 200 + 1);
+			background.y -= player.speed; player.y -= (float)player.speed / ((WH - (player.y + player.shell.h)) / 100 + 1);
 		}
 	}
 	if (IsKeyDown(SDL_SCANCODE_D))
