@@ -6,11 +6,8 @@
 
 
 //=============================================================================
-asteroid::asteroid(float x, float y, int w, int h, char* material, const char* path) {
+asteroid::asteroid(float x, float y, int w, int h, char* material) {
 	shell = { SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, w, h};
 	position = { x, y };
 	resource = material;
-
-	if(path != NULL)
-		texture = IMG_LoadTexture(gRenderer, path);
 }

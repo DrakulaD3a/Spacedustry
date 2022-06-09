@@ -15,7 +15,7 @@ public:
 	\param material - Material on this asteroid, NULL for no material
 	\param path - Path to the sprite
 	*/
-	asteroid(float x, float y, int w, int h, char* material, const char* path = NULL);
+	asteroid(float x, float y, int w, int h, char* material);
 
 
 

@@ -16,8 +16,8 @@ void RenderFrame(float dt);
 #define WW 1920
 #define WH 1080
 
-Player player(WW / 2 + 32, WH / 2 + 32, 64, 64);
-asteroid a1(10, 12, 64, 64, "Fe", "assets/meteor1.png");
+Player player(WW / 2 + 32, WH / 2 + 64, 64, 128);
+asteroid a1(10, 12, 64, 64, "Fe");
 SDL_Point mouse;
 SDL_Rect Camera = { 0, 0, WW, WH };
 SDL_Rect background = { -960, -540, 2 * 3840, 2 * 2160 };
@@ -37,6 +37,9 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
+
+	player.texture = IMG_LoadTexture(gRenderer, "assets/Spaceship.png");
+	a1.texture = IMG_LoadTexture(gRenderer, "assets/meteor1.png");
 	Backgroung = IMG_LoadTexture(gRenderer, "assets/Background.png");
 
 	StartLoop(Update, RenderFrame);
@@ -59,73 +62,73 @@ void Update(float dt)
 	//movement
 	if (IsKeyDown(SDL_SCANCODE_W))
 	{
-		player.y -= player.speed;
-		if (player.y <= 200)
+		player.position.y -= player.speed; player.rotation = 0;
+		if (player.position.y <= 200)
 		{
-			background.y += player.speed; player.y += (float)player.speed / (player.y / 100 + 1);
+			background.y += player.speed; player.position.y += (float)player.speed / (player.position.y / 100 + 1);
 		}
 	}
 	if (IsKeyDown(SDL_SCANCODE_A))
 	{
-		player.x -= player.speed;
-		if (player.x <= 400)
+		player.position.x -= player.speed; player.rotation = 270;
+		if (player.position.x <= 400)
 		{
-			background.x += player.speed; player.x += (float)player.speed / (player.x / 200 + 1);
+			background.x += player.speed; player.position.x += (float)player.speed / (player.position.x / 200 + 1);
 		}
 	}
 	if (IsKeyDown(SDL_SCANCODE_S))
 	{
-		player.y += player.speed;
-		if (WH - (player.y + player.shell.h) <= 200)
+		player.position.y += player.speed; player.rotation = 180;
+		if (WH - (player.position.y + player.shell.h) <= 200)
 		{
-			background.y -= player.speed; player.y -= (float)player.speed / ((WH - (player.y + player.shell.h)) / 100 + 1);
+			background.y -= player.speed; player.position.y -= (float)player.speed / ((WH - (player.position.y + player.shell.h)) / 100 + 1);
 		}
 	}
 	if (IsKeyDown(SDL_SCANCODE_D))
 	{
-		player.x += player.speed;
-		if (WW - (player.x + player.shell.w) <= 400)
+		player.position.x += player.speed; player.rotation = 90;
+		if (WW - (player.position.x + player.shell.w) <= 400)
 		{
-			background.x -= player.speed; player.x -= (float)player.speed / ((WW - (player.x + player.shell.w)) / 200 + 1);
+			background.x -= player.speed; player.position.x -= (float)player.speed / ((WW - (player.position.x + player.shell.w)) / 200 + 1);
 		}
 	}
 	if(IsKeyReleased(SDL_SCANCODE_W) || IsKeyReleased(SDL_SCANCODE_A) || IsKeyReleased(SDL_SCANCODE_S) || IsKeyReleased(SDL_SCANCODE_D))
 		timer = time(NULL) + 0.5;
 	//camera control
-	if (!IsKeyDown(SDL_SCANCODE_W) && player.y + player.shell.h / 2 <= WH / 2)
+	if (!IsKeyDown(SDL_SCANCODE_W) && player.position.y + player.shell.h / 2 <= WH / 2)
 	{
 		if (time(NULL) > timer)
 		{
-			player.y += player.speed; background.y += player.speed;
+			player.position.y += player.speed; background.y += player.speed;
 		}
 	}
-	if (!IsKeyDown(SDL_SCANCODE_A) && player.x + player.shell.w / 2 <= WW / 2)
+	if (!IsKeyDown(SDL_SCANCODE_A) && player.position.x + player.shell.w / 2 <= WW / 2)
 	{
 		if (time(NULL) > timer)
 		{
-			player.x += player.speed; background.x += player.speed;
+			player.position.x += player.speed; background.x += player.speed;
 		}
 	}
-	if (!IsKeyDown(SDL_SCANCODE_S) && player.y + player.shell.h / 2 >= WH / 2)
+	if (!IsKeyDown(SDL_SCANCODE_S) && player.position.y + player.shell.h / 2 >= WH / 2)
 	{
 		if (time(NULL) > timer)
 		{
-			player.y -= player.speed; background.y -= player.speed;
+			player.position.y -= player.speed; background.y -= player.speed;
 		}
 	}
-	if (!IsKeyDown(SDL_SCANCODE_D) && player.x + player.shell.w / 2 >= WW / 2)
+	if (!IsKeyDown(SDL_SCANCODE_D) && player.position.x + player.shell.w / 2 >= WW / 2)
 	{
 		if (time(NULL) > timer)
 		{
-			player.x -= player.speed; background.x -= player.speed;
+			player.position.x -= player.speed; background.x -= player.speed;
 		}
 	}
 
 
 
 	
-	player.shell.x = player.x;
-	player.shell.y = player.y;
+	player.shell.x = player.position.x;
+	player.shell.y = player.position.y;
 }
 
 void RenderFrame(float interpolation)
@@ -137,5 +140,5 @@ void RenderFrame(float interpolation)
 	SDL_RenderCopy(gRenderer, Backgroung, 0, &background);
 
 	SDL_SetRenderDrawColor(gRenderer, 0, 255, 0, 255);
-	SDL_RenderFillRect(gRenderer, &player.shell);
+	SDL_RenderCopyEx(gRenderer, player.texture, 0, &player.shell, player.rotation, &player.centre, SDL_FLIP_NONE);
 }
