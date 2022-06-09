@@ -35,6 +35,8 @@ int main(int argc, char* argv[])
 
 	Backgroung = LoadSprite("assets/Background.png");
 
+	player.x = WW / 2; player.y = WH / 2;
+
 	StartLoop(Update, RenderFrame);
 
 	CleanUp();
@@ -51,42 +53,62 @@ void Update(float dt)
 	if (IsKeyDown(SDL_SCANCODE_ESCAPE))
 		ExitGame();
 
+
+	//movement
 	if (IsKeyDown(SDL_SCANCODE_W))
 	{
-		player.shell.y -= player.speed;
-		if (player.shell.y <= 200)
+		player.y -= player.speed;
+		if (player.y <= 200)
 		{
-			background.y++; player.shell.y += (float)player.speed / (player.shell.y / 100 + 1);
+			background.y++; player.y += (float)player.speed / (player.y / 100 + 1);
 		}
 	}
 	if (IsKeyDown(SDL_SCANCODE_A))
 	{
-		player.shell.x -= player.speed;
-		if (player.shell.x <= 200)
+		player.x -= player.speed;
+		if (player.x <= 200)
 		{
-			background.x++; player.shell.x += (float)player.speed / (player.shell.x / 100 + 1);
+			background.x++; player.x += (float)player.speed / (player.x / 100 + 1);
 		}
 	}
 	if (IsKeyDown(SDL_SCANCODE_S))
 	{
-		player.shell.y += player.speed;
-		if (player.shell.y + player.shell.h >= WH - 200)
+		player.y += player.speed;
+		if (WH - (player.y + player.shell.h) <= 200)
 		{
-			background.y--; player.shell.y -= (float)player.speed / ((WH - (player.shell.y + player.shell.h)) / 100);
+			background.y--; player.y -= (float)player.speed / ((WH - (player.y + player.shell.h)) / 100 + 1);
 		}
 	}
 	if (IsKeyDown(SDL_SCANCODE_D))
 	{
-		player.shell.x += player.speed;
-		if (player.shell.x + player.shell.w >= WW - 200)
+		player.x += player.speed;
+		if (WW - (player.x + player.shell.w) <= 200)
 		{
-			background.x--; player.shell.x -= (float)player.speed / ((WW - (player.shell.x + player.shell.w)) / 100);
+			background.x--; player.x -= (float)player.speed / ((WW - (player.x + player.shell.w)) / 100 + 1);
 		}
+	}
+	//camera control
+	if (!IsKeyDown(SDL_SCANCODE_W) && player.y + player.shell.h / 2 <= WH / 2)
+	{
+		player.y++; background.y++;
+	}
+	if (!IsKeyDown(SDL_SCANCODE_A) && player.x + player.shell.w / 2 <= WW / 2)
+	{
+		player.x++; background.x++;
+	}
+	if (!IsKeyDown(SDL_SCANCODE_S) && player.y + player.shell.h / 2 >= WH / 2)
+	{
+		player.y--; background.y--;
+	}
+	if (!IsKeyDown(SDL_SCANCODE_D) && player.x + player.shell.w / 2 <= WW / 2)
+	{
+		player.x--; background.x--;
 	}
 
 
 	
-
+	player.shell.x = player.x;
+	player.shell.y = player.y;
 }
 
 void RenderFrame(float interpolation)
