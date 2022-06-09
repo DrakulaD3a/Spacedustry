@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <time.h>
 
 // Forward function declarations
 void Update(float dt);
@@ -16,9 +17,10 @@ void RenderFrame(float dt);
 #define WH 1080
 
 SDL_Point mouse;
-Player player = { { WW / 2, WH / 2, 64, 64 }, 2 };
-SDL_Rect background = { -960, -540, 3840, 2160 };
+Player player = { { WW / 2, WH / 2, 64, 64 }, 4 };
+SDL_Rect background = { -960, -540, 2 * 3840, 2 * 2160 };
 Sprite Backgroung;
+time_t timer = time(NULL) + 0.5;
 
 //=============================================================================
 int main(int argc, char* argv[])
@@ -35,7 +37,7 @@ int main(int argc, char* argv[])
 
 	Backgroung = LoadSprite("assets/Background.png");
 
-	player.x = WW / 2; player.y = WH / 2;
+	player.x = WW / 2 - player.shell.w / 2; player.y = WH / 2 - player.shell.h / 2;
 
 	StartLoop(Update, RenderFrame);
 
@@ -58,51 +60,65 @@ void Update(float dt)
 	if (IsKeyDown(SDL_SCANCODE_W))
 	{
 		player.y -= player.speed;
-		if (player.y <= 200)
+		if (player.y <= 400)
 		{
-			background.y++; player.y += (float)player.speed / (player.y / 100 + 1);
+			background.y++; player.y += (float)player.speed / (player.y / 200 + 1);
 		}
 	}
 	if (IsKeyDown(SDL_SCANCODE_A))
 	{
 		player.x -= player.speed;
-		if (player.x <= 200)
+		if (player.x <= 400)
 		{
-			background.x++; player.x += (float)player.speed / (player.x / 100 + 1);
+			background.x++; player.x += (float)player.speed / (player.x / 200 + 1);
 		}
 	}
 	if (IsKeyDown(SDL_SCANCODE_S))
 	{
 		player.y += player.speed;
-		if (WH - (player.y + player.shell.h) <= 200)
+		if (WH - (player.y + player.shell.h) <= 400)
 		{
-			background.y--; player.y -= (float)player.speed / ((WH - (player.y + player.shell.h)) / 100 + 1);
+			background.y--; player.y -= (float)player.speed / ((WH - (player.y + player.shell.h)) / 200 + 1);
 		}
 	}
 	if (IsKeyDown(SDL_SCANCODE_D))
 	{
 		player.x += player.speed;
-		if (WW - (player.x + player.shell.w) <= 200)
+		if (WW - (player.x + player.shell.w) <= 400)
 		{
-			background.x--; player.x -= (float)player.speed / ((WW - (player.x + player.shell.w)) / 100 + 1);
+			background.x--; player.x -= (float)player.speed / ((WW - (player.x + player.shell.w)) / 200 + 1);
 		}
 	}
+	if(IsKeyReleased(SDL_SCANCODE_W) || IsKeyReleased(SDL_SCANCODE_A) || IsKeyReleased(SDL_SCANCODE_S) || IsKeyReleased(SDL_SCANCODE_D))
+		timer = time(NULL) + 0.5;
 	//camera control
 	if (!IsKeyDown(SDL_SCANCODE_W) && player.y + player.shell.h / 2 <= WH / 2)
 	{
-		player.y++; background.y++;
+		if (time(NULL) > timer)
+		{
+			player.y += player.speed; background.y += player.speed;
+		}
 	}
 	if (!IsKeyDown(SDL_SCANCODE_A) && player.x + player.shell.w / 2 <= WW / 2)
 	{
-		player.x++; background.x++;
+		if (time(NULL) > timer)
+		{
+			player.x += player.speed; background.x += player.speed;
+		}
 	}
 	if (!IsKeyDown(SDL_SCANCODE_S) && player.y + player.shell.h / 2 >= WH / 2)
 	{
-		player.y--; background.y--;
+		if (time(NULL) > timer)
+		{
+			player.y -= player.speed; background.y -= player.speed;
+		}
 	}
-	if (!IsKeyDown(SDL_SCANCODE_D) && player.x + player.shell.w / 2 <= WW / 2)
+	if (!IsKeyDown(SDL_SCANCODE_D) && player.x + player.shell.w / 2 >= WW / 2)
 	{
-		player.x--; background.x--;
+		if (time(NULL) > timer)
+		{
+			player.x -= player.speed; background.x -= player.speed;
+		}
 	}
 
 
