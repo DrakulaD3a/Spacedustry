@@ -13,7 +13,4 @@ asteroid::asteroid(float x, float y, int w, int h, char* material, const char* p
 
 	if(path != NULL)
 		texture = IMG_LoadTexture(gRenderer, path);
-
-	
-	
 }

@@ -3,12 +3,12 @@
 #include "SDL.h"
 
 class asteroid {
+public:
 	SDL_Rect shell;
 	coords position;
 	char* resource;
-	SDL_Texture* texture;
+	SDL_Texture* texture = NULL;
 
-public:
 	/* Initializes this object
 	\param rect - rectangle of this object
 	\param x, y - coordinations of this obj relative to the map

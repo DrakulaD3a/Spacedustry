@@ -16,10 +16,10 @@ void RenderFrame(float dt);
 #define WW 1920
 #define WH 1080
 
-SDL_Point mouse;
-Player player = { { WW / 2, WH / 2, 64, 64 }, 4, WW / 2 - player.shell.w / 2 , WH / 2 - player.shell.h / 2 };
-SDL_Rect Camera = { 0, 0, WW, WH };
+Player player(WW / 2 + 32, WH / 2 + 32, 64, 64);
 asteroid a1(10, 12, 64, 64, "Fe", "assets/meteor1.png");
+SDL_Point mouse;
+SDL_Rect Camera = { 0, 0, WW, WH };
 SDL_Rect background = { -960, -540, 2 * 3840, 2 * 2160 };
 SDL_Texture* Backgroung;
 time_t timer = time(NULL) + 0.5;
