@@ -8,12 +8,17 @@ set(SOURCES
 	src/engine.h
 	src/engine.cpp
 	src/main.cpp
+	src/coordinates.h
 	src/player.h
+	src/asteroid.cpp
+	src/asteroid.h
 )
 
 source_group("Headers" FILES
 	src/engine.h
+	src/coordinates.h
 	src/player.h
+	src/asteroid.h
 )
 
 # Set a default build type if none was specified

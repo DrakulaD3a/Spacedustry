@@ -18,6 +18,7 @@ void RenderFrame(float dt);
 
 SDL_Point mouse;
 Player player = { { WW / 2, WH / 2, 64, 64 }, 4, WW / 2 - player.shell.w / 2 , WH / 2 - player.shell.h / 2 };
+SDL_Rect Camera = { 0, 0, WW, WH };
 asteroid a1(10, 12, 64, 64, "Fe", "assets/meteor1.png");
 SDL_Rect background = { -960, -540, 2 * 3840, 2 * 2160 };
 SDL_Texture* Backgroung;
