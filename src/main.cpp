@@ -79,10 +79,8 @@ void Update(float dt)
 
 	if (player.rotation >= 360)
 		player.rotation -= 360;
-	if (player.rotation <= -360)
+	if (player.rotation < 0)
 		player.rotation += 360;
-	player.shell.x = player.position.x;
-	player.shell.y = player.position.y;
 }
 
 void RenderFrame(float interpolation)

@@ -7,6 +7,7 @@ public:
 	coords position;
 	int speed = 2, rotation, speedOfRotating = 2;
 	SDL_Point centre;
+	SDL_RendererFlip flip = SDL_FLIP_NONE;
 
 
 	/* Initializes this player
