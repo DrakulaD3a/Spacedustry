@@ -28,16 +28,16 @@ void Player::move(const char dir) {
 		else if (rotation >= 90 && rotation < 180)
 		{
 			position.x += sin(rotation * M_PI / 180) * speed;
-			position.y += cos(rotation * M_PI / 180) * speed;
+			position.y -= cos(rotation * M_PI / 180) * speed;
 		}
 		else if (rotation >= 180 && rotation < 270)
 		{
-			position.x -= sin(rotation * M_PI / 180) * speed;
-			position.y += cos(rotation * M_PI / 180) * speed;
+			position.x += sin(rotation * M_PI / 180) * speed;
+			position.y -= cos(rotation * M_PI / 180) * speed;
 		}
 		else if (rotation >= 270 && rotation < 360)
 		{
-			position.x -= sin(rotation * M_PI / 180) * speed;
+			position.x += sin(rotation * M_PI / 180) * speed;
 			position.y -= cos(rotation * M_PI / 180) * speed;
 		}
 	}
@@ -50,7 +50,7 @@ void Player::move(const char dir) {
 		}
 		else if (rotation >= 90 && rotation < 180)
 		{
-			position.x += sin(rotation * M_PI / 180) * speed;
+			position.x -= sin(rotation * M_PI / 180) * speed;
 			position.y += cos(rotation * M_PI / 180) * speed;
 		}
 		else if (rotation >= 180 && rotation < 270)
@@ -61,7 +61,7 @@ void Player::move(const char dir) {
 		else if (rotation >= 270 && rotation < 360)
 		{
 			position.x -= sin(rotation * M_PI / 180) * speed;
-			position.y -= cos(rotation * M_PI / 180) * speed;
+			position.y += cos(rotation * M_PI / 180) * speed;
 		}
 	}
 	else

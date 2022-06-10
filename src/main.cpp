@@ -61,11 +61,51 @@ void Update(float dt)
 
 	if (IsKeyDown(SDL_SCANCODE_W))
 	{
-		player.move('F');
+		if (player.position.x <= 100 && (player.rotation >= 180 && player.rotation <= 360))
+		{
+			background.x += player.speed;
+		}
+		if (player.position.y <= 100 && (player.rotation >= 270 || player.rotation <= 90))
+		{
+			background.y += player.speed;
+		}
+		if (WW - (player.position.x + player.shell.w) <= 100 && (player.rotation >= 0 && player.rotation <= 180))
+		{
+			background.x -= player.speed;
+		}
+		if (WH - (player.position.y + player.shell.h) <= 100 && (player.rotation >= 90 && player.rotation <= 270))
+		{
+			background.y -= player.speed;
+		}
+		if(!(player.position.x <= 100 && (player.rotation >= 180 && player.rotation <= 360))
+			&& !(player.position.y <= 100 && (player.rotation >= 270 || player.rotation <= 90))
+			&& !(WW - (player.position.x + player.shell.w) <= 100 && (player.rotation >= 0 && player.rotation <= 180))
+			&& !(WH - (player.position.y + player.shell.h) <= 100 && (player.rotation >= 90 && player.rotation <= 270)))
+			player.move('F');
 	}
 	if (IsKeyDown(SDL_SCANCODE_S))
 	{
-		player.move('R');
+		if (player.position.x <= 100 && (player.rotation >= 0 && player.rotation <= 180))
+		{
+			background.x += player.speed;
+		}
+		if (player.position.y <= 100 && (player.rotation >= 90 && player.rotation <= 270))
+		{
+			background.y += player.speed;
+		}
+		if (WW - (player.position.x + player.shell.w) <= 100 && (player.rotation >= 180 && player.rotation <= 360))
+		{
+			background.x -= player.speed;
+		}
+		if (WH - (player.position.y + player.shell.h) <= 100 && (player.rotation >= 270 || player.rotation <= 90))
+		{
+			background.y -= player.speed;
+		}
+		if (!(player.position.x <= 100 && (player.rotation >= 0 && player.rotation <= 180))
+			&& !(player.position.y <= 100 && (player.rotation >= 90 && player.rotation <= 270))
+			&& !(WW - (player.position.x + player.shell.w) <= 100 && (player.rotation >= 180 && player.rotation <= 360))
+			&& !(WH - (player.position.y + player.shell.h) <= 100 && (player.rotation >= 270 || player.rotation <= 90)))
+			player.move('R');
 	}
 	if (IsKeyDown(SDL_SCANCODE_A))
 	{
@@ -75,6 +115,9 @@ void Update(float dt)
 	{
 		player.rotation += player.speedOfRotating;
 	}
+
+	//camera movement
+	
 
 
 	if (player.rotation >= 360)
