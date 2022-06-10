@@ -6,7 +6,6 @@ public:
 	SDL_Rect shell;
 	coords position;
 	int speed, rotation;
-	SDL_Texture* texture = NULL;
 	SDL_Point centre;
 
 

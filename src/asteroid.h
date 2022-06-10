@@ -7,7 +7,6 @@ public:
 	SDL_Rect shell;
 	coords position;
 	char* resource;
-	SDL_Texture* texture = NULL;
 
 	/* Initializes this object
 	\param rect - rectangle of this object
