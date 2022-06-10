@@ -16,7 +16,7 @@ void RenderFrame(float dt);
 #define WW 1920
 #define WH 1080
 
-Player player(WW / 2 + 32, WH / 2 + 64, 64, 128);
+Player player(WW / 2 + 64, WH / 2 + 128, 128, 256);
 asteroid a1(10, 12, 64, 64, "Fe");
 SDL_Point mouse;
 SDL_Rect Camera = { 0, 0, WW, WH };
@@ -59,10 +59,28 @@ void Update(float dt)
 		ExitGame();
 
 
+	if (IsKeyDown(SDL_SCANCODE_W))
+	{
+		player.move('F');
+	}
+	if (IsKeyDown(SDL_SCANCODE_S))
+	{
+		player.move('R');
+	}
+	if (IsKeyDown(SDL_SCANCODE_A))
+	{
+		player.rotation -= player.speedOfRotating;
+	}
+	if (IsKeyDown(SDL_SCANCODE_D))
+	{
+		player.rotation += player.speedOfRotating;
+	}
 
 
-
-	
+	if (player.rotation >= 360)
+		player.rotation -= 360;
+	if (player.rotation <= -360)
+		player.rotation += 360;
 	player.shell.x = player.position.x;
 	player.shell.y = player.position.y;
 }
