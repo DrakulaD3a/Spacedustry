@@ -42,6 +42,8 @@ int main(int argc, char* argv[])
 	a1_texture = IMG_LoadTexture(gRenderer, "assets/meteor1.png");
 	Backgroung = IMG_LoadTexture(gRenderer, "assets/Background.png");
 
+	SDL_ShowCursor(SDL_FALSE);
+
 	StartLoop(Update, RenderFrame);
 
 	CleanUp();
