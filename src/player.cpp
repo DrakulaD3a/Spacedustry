@@ -68,6 +68,6 @@ void Player::move(const char dir) {
 	{
 		fprintf(stderr, "You want to move in unexisting direction.");
 	}
-	shell.x = position.x;
-	shell.y = position.y;
+	shell.x = (int)position.x;
+	shell.y = (int)position.y;
 }

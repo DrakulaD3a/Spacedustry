@@ -22,7 +22,7 @@ SDL_Point mouse;
 SDL_Rect Camera = { 0, 0, WW, WH };
 SDL_Rect background = { -960, -540, 2 * 3840, 2 * 2160 };
 SDL_Texture *player_texture, *a1_texture, *Backgroung;
-time_t timer = time(NULL) + 0.5;
+double timer = time(NULL) + 0.5;
 
 //=============================================================================
 int main(int argc, char* argv[])
