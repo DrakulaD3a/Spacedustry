@@ -5,7 +5,7 @@ class Player {
 public:
 	SDL_Rect shell;
 	coords position;
-	int speed, rotation;
+	int speed = 2, rotation, speedOfRotating = 2;
 	SDL_Point centre;
 
 
@@ -15,4 +15,10 @@ public:
 	\param path - path to the picture
 	*/
 	Player(float x, float y, int w, int h);
+
+
+	/*Moves the player
+	\param dir - direction of the move (F = forwards, R = Reverse)
+	*/
+	void move(const char dir);
 };

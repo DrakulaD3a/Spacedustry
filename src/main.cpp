@@ -16,7 +16,7 @@ void RenderFrame(float dt);
 #define WW 1920
 #define WH 1080
 
-Player player(WW / 2 + 32, WH / 2 + 64, 64, 128);
+Player player(WW / 2 + 64, WH / 2 + 128, 128, 256);
 asteroid a1(10, 12, 64, 64, "Fe");
 SDL_Point mouse;
 SDL_Rect Camera = { 0, 0, WW, WH };
@@ -59,76 +59,71 @@ void Update(float dt)
 		ExitGame();
 
 
-		//movement
 	if (IsKeyDown(SDL_SCANCODE_W))
 	{
-		player.position.y -= player.speed; player.rotation = 0;
-		if (player.position.y <= 200)
+		if (player.position.x <= 100 && (player.rotation >= 180 && player.rotation <= 360))
 		{
-			background.y += player.speed; player.position.y += (float)player.speed / (player.position.y / 100 + 1);
+			background.x += player.speed;
 		}
-	}
-	if (IsKeyDown(SDL_SCANCODE_A))
-	{
-		player.position.x -= player.speed; player.rotation = 270;
-		if (player.position.x <= 400)
+		if (player.position.y <= 100 && (player.rotation >= 270 || player.rotation <= 90))
 		{
-			background.x += player.speed; player.position.x += (float)player.speed / (player.position.x / 200 + 1);
+			background.y += player.speed;
 		}
+		if (WW - (player.position.x + player.shell.w) <= 100 && (player.rotation >= 0 && player.rotation <= 180))
+		{
+			background.x -= player.speed;
+		}
+		if (WH - (player.position.y + player.shell.h) <= 100 && (player.rotation >= 90 && player.rotation <= 270))
+		{
+			background.y -= player.speed;
+		}
+		if(!(player.position.x <= 100 && (player.rotation >= 180 && player.rotation <= 360))
+			&& !(player.position.y <= 100 && (player.rotation >= 270 || player.rotation <= 90))
+			&& !(WW - (player.position.x + player.shell.w) <= 100 && (player.rotation >= 0 && player.rotation <= 180))
+			&& !(WH - (player.position.y + player.shell.h) <= 100 && (player.rotation >= 90 && player.rotation <= 270)))
+			player.move('F');
 	}
 	if (IsKeyDown(SDL_SCANCODE_S))
 	{
-		player.position.y += player.speed; player.rotation = 180;
-		if (WH - (player.position.y + player.shell.h) <= 200)
+		if (player.position.x <= 100 && (player.rotation >= 0 && player.rotation <= 180))
 		{
-			background.y -= player.speed; player.position.y -= (float)player.speed / ((WH - (player.position.y + player.shell.h)) / 100 + 1);
+			background.x += player.speed;
 		}
+		if (player.position.y <= 100 && (player.rotation >= 90 && player.rotation <= 270))
+		{
+			background.y += player.speed;
+		}
+		if (WW - (player.position.x + player.shell.w) <= 100 && (player.rotation >= 180 && player.rotation <= 360))
+		{
+			background.x -= player.speed;
+		}
+		if (WH - (player.position.y + player.shell.h) <= 100 && (player.rotation >= 270 || player.rotation <= 90))
+		{
+			background.y -= player.speed;
+		}
+		if (!(player.position.x <= 100 && (player.rotation >= 0 && player.rotation <= 180))
+			&& !(player.position.y <= 100 && (player.rotation >= 90 && player.rotation <= 270))
+			&& !(WW - (player.position.x + player.shell.w) <= 100 && (player.rotation >= 180 && player.rotation <= 360))
+			&& !(WH - (player.position.y + player.shell.h) <= 100 && (player.rotation >= 270 || player.rotation <= 90)))
+			player.move('R');
+	}
+	if (IsKeyDown(SDL_SCANCODE_A))
+	{
+		player.rotation -= player.speedOfRotating;
 	}
 	if (IsKeyDown(SDL_SCANCODE_D))
 	{
-		player.position.x += player.speed; player.rotation = 90;
-		if (WW - (player.position.x + player.shell.w) <= 400)
-		{
-			background.x -= player.speed; player.position.x -= (float)player.speed / ((WW - (player.position.x + player.shell.w)) / 200 + 1);
-		}
-	}
-	if(IsKeyReleased(SDL_SCANCODE_W) || IsKeyReleased(SDL_SCANCODE_A) || IsKeyReleased(SDL_SCANCODE_S) || IsKeyReleased(SDL_SCANCODE_D))
-		timer = time(NULL) + 0.5;
-	//camera control
-	if (!IsKeyDown(SDL_SCANCODE_W) && player.position.y + player.shell.h / 2 <= WH / 2)
-	{
-		if (time(NULL) > timer)
-		{
-			player.position.y += player.speed; background.y += player.speed;
-		}
-	}
-	if (!IsKeyDown(SDL_SCANCODE_A) && player.position.x + player.shell.w / 2 <= WW / 2)
-	{
-		if (time(NULL) > timer)
-		{
-			player.position.x += player.speed; background.x += player.speed;
-		}
-	}
-	if (!IsKeyDown(SDL_SCANCODE_S) && player.position.y + player.shell.h / 2 >= WH / 2)
-	{
-		if (time(NULL) > timer)
-		{
-			player.position.y -= player.speed; background.y -= player.speed;
-		}
-	}
-	if (!IsKeyDown(SDL_SCANCODE_D) && player.position.x + player.shell.w / 2 >= WW / 2)
-	{
-		if (time(NULL) > timer)
-		{
-			player.position.x -= player.speed; background.x -= player.speed;
-		}
+		player.rotation += player.speedOfRotating;
 	}
 
-
-
+	//camera movement
 	
-	player.shell.x = player.position.x;
-	player.shell.y = player.position.y;
+
+
+	if (player.rotation >= 360)
+		player.rotation -= 360;
+	if (player.rotation < 0)
+		player.rotation += 360;
 }
 
 void RenderFrame(float interpolation)
