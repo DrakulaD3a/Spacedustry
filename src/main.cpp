@@ -16,11 +16,11 @@ void RenderFrame(float dt);
 #define WW 1920
 #define WH 1080
 
-Player player(WW / 2 + 64, WH / 2 + 128, 128, 256);
+Player player(WW / 2 + 32, WH / 2 + 64, 64, 128);
 asteroid a1(10, 12, 64, 64, "Fe");
 SDL_Point mouse;
-SDL_Rect Camera = { 0, 0, WW, WH };
-SDL_Rect background = { -960, -540, 2 * 3840, 2 * 2160 };
+SDL_Rect background = { 0, 0, 7680, 4320 };
+SDL_Rect Camera = { background.x / 2, background.y / 2, WW, WH };
 SDL_Texture *player_texture, *a1_texture, *Backgroung;
 double timer = time(NULL) + 0.5;
 
@@ -51,7 +51,6 @@ int main(int argc, char* argv[])
 }
 
 //=============================================================================
-
 void Update(float dt)
 {
 	GetMousePosition(&mouse.x, &mouse.y);
@@ -117,9 +116,9 @@ void Update(float dt)
 	{
 		player.rotation += player.speedOfRotating;
 	}
-
-	//camera movement
 	
+
+
 
 
 	if (player.rotation >= 360)

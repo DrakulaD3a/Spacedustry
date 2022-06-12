@@ -9,6 +9,7 @@ set(SOURCES
 	src/engine.cpp
 	src/main.cpp
 	src/coordinates.h
+	src/coordinates.cpp
 	src/player.cpp
 	src/player.h
 	src/asteroid.cpp

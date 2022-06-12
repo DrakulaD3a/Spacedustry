@@ -5,14 +5,14 @@
 
 
 //=============================================================================
-void toCamCords(SDL_Rect Cam, double* x, double* y) {
+void toCamCords(SDL_Rect Cam, int* x, int* y) {
 	*x -= Cam.x;
 	*y -= Cam.y;
 }
 
 
 //=============================================================================
-void toMapCords(SDL_Rect Cam, double* x, double* y) {
+void toMapCords(SDL_Rect Cam, int* x, int* y) {
 	*x += Cam.x;
 	*y += Cam.y;
 }
