@@ -10,16 +10,12 @@ set(SOURCES
 	src/main.cpp
 	src/coordinates.h
 	src/coordinates.cpp
-	src/player.cpp
-	src/player.h
-	src/asteroid.cpp
 	src/asteroid.h
 )
 
 source_group("Headers" FILES
 	src/engine.h
 	src/coordinates.h
-	src/player.h
 	src/asteroid.h
 )
 
