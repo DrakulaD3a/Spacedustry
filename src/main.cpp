@@ -1,7 +1,5 @@
 #include "engine.h"
-#include "player.h"
 #include "asteroid.h"
-#include "rect.h"
 #include "SDL.h"
 #include "SDL_image.h"
 #include "SDL_mixer.h"
@@ -21,7 +19,7 @@ asteroid a1 = { { 10, 12, 64, 64 }, { 10, 12 }, "Fe" };
 SDL_Point mouse;
 SDL_Rect background = { 0, 0, 7680, 4320 };
 SDL_Rect Camera = { background.x / 2, background.y / 2, WW, WH };
-SDL_Texture *player_texture, *a1_texture, *Backgroung;
+SDL_Texture *a1_texture, *Backgroung;
 double timer = time(NULL) + 0.5;
 
 //=============================================================================
@@ -38,7 +36,6 @@ int main(int argc, char* argv[])
 	}
 
 
-	player_texture = IMG_LoadTexture(gRenderer, "assets/Spaceship.png");
 	a1_texture = IMG_LoadTexture(gRenderer, "assets/Meteor1.png");
 	Backgroung = IMG_LoadTexture(gRenderer, "assets/Background.png");
 
