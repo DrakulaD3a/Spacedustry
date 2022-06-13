@@ -11,11 +11,4 @@ struct coords {
 \param Cam - Rectangle of the camera
 \param map - coordinates of the object
 */
-int toCamCordX(SDL_Rect Cam, coords map);
-
-
-/* Basic function that returns y coordination relative to the camera
-\param Cam - Rectangle of the camera
-\param map - coordinates of the object
-*/
-int toCamCordY(SDL_Rect Cam, coords map);
+void toCamCords(SDL_Rect Cam, coords map, int *x, int *y);
