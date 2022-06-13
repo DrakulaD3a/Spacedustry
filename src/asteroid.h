@@ -5,5 +5,5 @@
 struct asteroid {
 	SDL_Rect shell;
 	coords position;
-	char* resource;
+	char resource[3];
 };
