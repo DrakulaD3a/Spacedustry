@@ -1,6 +1,7 @@
 #include "engine.h"
 #include "player.h"
 #include "asteroid.h"
+#include "rect.h"
 #include "SDL.h"
 #include "SDL_image.h"
 #include "SDL_mixer.h"
@@ -16,8 +17,7 @@ void RenderFrame(float dt);
 #define WW 1920
 #define WH 1080
 
-Player player(WW / 2 + 32, WH / 2 + 64, 64, 128);
-asteroid a1(10, 12, 64, 64, "Fe");
+asteroid a1 = { { 10, 12, 64, 64 }, { 10, 12 }, "Fe" };
 SDL_Point mouse;
 SDL_Rect background = { 0, 0, 7680, 4320 };
 SDL_Rect Camera = { background.x / 2, background.y / 2, WW, WH };
@@ -39,7 +39,7 @@ int main(int argc, char* argv[])
 
 
 	player_texture = IMG_LoadTexture(gRenderer, "assets/Spaceship.png");
-	a1_texture = IMG_LoadTexture(gRenderer, "assets/meteor1.png");
+	a1_texture = IMG_LoadTexture(gRenderer, "assets/Meteor1.png");
 	Backgroung = IMG_LoadTexture(gRenderer, "assets/Background.png");
 
 	SDL_ShowCursor(SDL_FALSE);
@@ -59,74 +59,9 @@ void Update(float dt)
 	if (IsKeyDown(SDL_SCANCODE_ESCAPE))
 		ExitGame();
 
-
-	if (IsKeyDown(SDL_SCANCODE_W))
-	{
-		if (player.position.x <= 100 && (player.rotation >= 180 && player.rotation <= 360))
-		{
-			background.x += player.speed;
-		}
-		if (player.position.y <= 100 && (player.rotation >= 270 || player.rotation <= 90))
-		{
-			background.y += player.speed;
-		}
-		if (WW - (player.position.x + player.shell.w) <= 100 && (player.rotation >= 0 && player.rotation <= 180))
-		{
-			background.x -= player.speed;
-		}
-		if (WH - (player.position.y + player.shell.h) <= 100 && (player.rotation >= 90 && player.rotation <= 270))
-		{
-			background.y -= player.speed;
-		}
-		if(!(player.position.x <= 100 && (player.rotation >= 180 && player.rotation <= 360))
-			&& !(player.position.y <= 100 && (player.rotation >= 270 || player.rotation <= 90))
-			&& !(WW - (player.position.x + player.shell.w) <= 100 && (player.rotation >= 0 && player.rotation <= 180))
-			&& !(WH - (player.position.y + player.shell.h) <= 100 && (player.rotation >= 90 && player.rotation <= 270)))
-			player.move('F');
-	}
-	if (IsKeyDown(SDL_SCANCODE_S))
-	{
-		if (player.position.x <= 100 && (player.rotation >= 0 && player.rotation <= 180))
-		{
-			background.x += player.speed;
-		}
-		if (player.position.y <= 100 && (player.rotation >= 90 && player.rotation <= 270))
-		{
-			background.y += player.speed;
-		}
-		if (WW - (player.position.x + player.shell.w) <= 100 && (player.rotation >= 180 && player.rotation <= 360))
-		{
-			background.x -= player.speed;
-		}
-		if (WH - (player.position.y + player.shell.h) <= 100 && (player.rotation >= 270 || player.rotation <= 90))
-		{
-			background.y -= player.speed;
-		}
-		if (!(player.position.x <= 100 && (player.rotation >= 0 && player.rotation <= 180))
-			&& !(player.position.y <= 100 && (player.rotation >= 90 && player.rotation <= 270))
-			&& !(WW - (player.position.x + player.shell.w) <= 100 && (player.rotation >= 180 && player.rotation <= 360))
-			&& !(WH - (player.position.y + player.shell.h) <= 100 && (player.rotation >= 270 || player.rotation <= 90)))
-			player.move('R');
-	}
-	if (IsKeyDown(SDL_SCANCODE_A))
-	{
-		player.rotation -= player.speedOfRotating;
-	}
-	if (IsKeyDown(SDL_SCANCODE_D))
-	{
-		player.rotation += player.speedOfRotating;
-	}
-	
-
-
-
-
-	if (player.rotation >= 360)
-		player.rotation -= 360;
-	if (player.rotation < 0)
-		player.rotation += 360;
 }
 
+//=============================================================================
 void RenderFrame(float interpolation)
 {
 	// Clear screen
@@ -134,7 +69,4 @@ void RenderFrame(float interpolation)
 	SDL_RenderClear(gRenderer);
 
 	SDL_RenderCopy(gRenderer, Backgroung, 0, &background);
-
-	SDL_SetRenderDrawColor(gRenderer, 0, 255, 0, 255);
-	SDL_RenderCopyEx(gRenderer, player_texture, 0, &player.shell, player.rotation, &player.centre, SDL_FLIP_NONE);
 }

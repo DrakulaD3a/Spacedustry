@@ -2,8 +2,9 @@
 #include "coordinates.h"
 #include "SDL.h"
 
-struct asteroid {
+
+
+struct rect {
 	SDL_Rect shell;
-	coords position;
-	char* resource;
+	coords map;
 };

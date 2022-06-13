@@ -7,15 +7,15 @@ struct coords {
 };
 
 
-/* Basic functiion to give you x and y values relative to the camera
+/* Basic function that returns x coordination relative to the camera
 \param Cam - Rectangle of the camera
-\param x, y - coordinates of the object
+\param map - coordinates of the object
 */
-void toCamCords(SDL_Rect Cam, int* x, int* y);
+int toCamCordX(SDL_Rect Cam, coords map);
 
 
-/* Basic functiion to give you x and y values relative to the map
+/* Basic function that returns y coordination relative to the camera
 \param Cam - Rectangle of the camera
-\param x, y - coordinates of the object
+\param map - coordinates of the object
 */
-void toMapCords(SDL_Rect Cam, int* x, int* y);
+int toCamCordY(SDL_Rect Cam, coords map);
