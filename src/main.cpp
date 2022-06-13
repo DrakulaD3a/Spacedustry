@@ -75,8 +75,8 @@ void Update(float dt)
 		Camera.x++;
 
 
-	if (SDL_PointInRect(&mouse, &a1.shell))
-	{
+	if (SDL_PointInRect(&mouse, &a1.shell) || SDL_PointInRect(&mouse, &buildmenu.shell))
+	{	
 		if (IsMousePressed(SDL_BUTTON_LMASK))
 		{
 			buildmenu.shown = true;
@@ -86,9 +86,11 @@ void Update(float dt)
 			bmbutton1.shell.x = buildmenu.shell.x;
 			bmbutton1.shell.y = buildmenu.shell.y;
 		}
-		if (SDL_PointInRect(&mouse, &bmbutton1.shell))
+		if (SDL_PointInRect(&mouse, &buildmenu.shell) && SDL_PointInRect(&mouse, &bmbutton1.shell))
 		{
 			strcpy(a1.building, "miner");
+			buildmenu.shown = false;
+			bmbutton1.shown = false;
 		}
 	}
 	else
