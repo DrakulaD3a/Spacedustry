@@ -10,22 +10,23 @@
 #include <time.h>
 #include <string.h>
 
-struct Build {
-	SDL_Rect shell;
-	bool shown = false;
-};
-
 // Forward function declarations
 void Update(float dt);
 void RenderFrame(float dt);
+void loadAssets();
 void updatePositions();
 
 #define WW 1920
 #define WH 1080
 #define cameraSpeed 120
 
-Build buildmenu = { 0, 0, 128, 256 };
-Button bmbutton1 = { 0, 0, 128, 128 };
+struct Build {
+	SDL_Rect shell;
+	bool shown = false;
+};
+
+Build buildmenu = { -999, -999, 128, 256 };
+Button bmbutton1 = { -999, -999, 128, 128 };
 asteroid a1 = { { 0, 0, 64, 64 }, { 30, 30 }, "Fe", "\0"};
 SDL_Point mouse;
 SDL_Rect building{ a1.shell.x + a1.shell.w / 2, a1.shell.y + a1.shell.h / 2, 32, 32 };
@@ -47,9 +48,7 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-
-	a1_texture = IMG_LoadTexture(gRenderer, "assets/Meteor1.png");
-	backgroung_texture = IMG_LoadTexture(gRenderer, "assets/Background.png");
+	loadAssets();
 
 	StartLoop(Update, RenderFrame);
 
@@ -132,6 +131,11 @@ void RenderFrame(float interpolation)
 	}
 }
 
+//=============================================================================
+void loadAssets() {
+	a1_texture = IMG_LoadTexture(gRenderer, "assets/Meteor1.png");
+	backgroung_texture = IMG_LoadTexture(gRenderer, "assets/Background.png");
+}
 
 //=============================================================================
 void updatePositions() {
