@@ -26,7 +26,7 @@ struct Build {
 };
 
 Build buildmenu = { -999, -999, 128, 256 };
-Button bmbutton1 = { -999, -999, 128, 128 };
+Button bmbutton1 = { -999, -999, 96, 96 };
 asteroid a1 = { { 0, 0, 64, 64 }, { 30, 30 }, "Fe", "\0"};
 SDL_Point mouse;
 SDL_Rect building{ a1.shell.x + a1.shell.w / 2, a1.shell.y + a1.shell.h / 2, 32, 32 };
@@ -76,8 +76,17 @@ void Update(float dt)
 	if (IsKeyDown(SDL_SCANCODE_D))
 		Camera.x += cameraSpeed * dt;
 
-
-	if (SDL_PointInRect(&mouse, &a1.shell) || SDL_PointInRect(&mouse, &buildmenu.shell))
+	if (SDL_PointInRect(&mouse, &buildmenu.shell))
+	{
+		if (SDL_PointInRect(&mouse, &bmbutton1.shell))
+		{
+			if (IsMousePressed(SDL_BUTTON_LMASK))
+			{
+				strcpy(a1.building, "miner");
+			}
+		}
+	}
+	else if (SDL_PointInRect(&mouse, &a1.shell))
 	{	
 		if (IsMousePressed(SDL_BUTTON_LMASK))
 		{
@@ -85,20 +94,16 @@ void Update(float dt)
 			bmbutton1.shown = true;
 			buildmenu.shell.x = mouse.x;
 			buildmenu.shell.y = mouse.y;
-			bmbutton1.shell.x = buildmenu.shell.x;
-			bmbutton1.shell.y = buildmenu.shell.y;
-		}
-		if (SDL_PointInRect(&mouse, &buildmenu.shell) && SDL_PointInRect(&mouse, &bmbutton1.shell))
-		{
-			strcpy(a1.building, "miner");
-			buildmenu.shown = false;
-			bmbutton1.shown = false;
+			bmbutton1.shell.x = buildmenu.shell.x + 16;
+			bmbutton1.shell.y = buildmenu.shell.y + 16;
 		}
 	}
 	else
 	{
 		buildmenu.shown = false;
 		bmbutton1.shown = false;
+		buildmenu.shell.x = -1000;
+		bmbutton1.shell.x = -1000;
 	}
 	updatePositions();
 }
@@ -124,7 +129,7 @@ void RenderFrame(float interpolation)
 		SDL_SetRenderDrawColor(gRenderer, 225, 0, 0, 255);
 		SDL_RenderFillRect(gRenderer, &bmbutton1.shell);
 	}
-	if (a1.building == "miner")
+	if ((strcmp(a1.building, "miner")) == 0)
 	{
 		SDL_SetRenderDrawColor(gRenderer, 225, 0, 0, 255);
 		SDL_RenderFillRect(gRenderer, &building);
