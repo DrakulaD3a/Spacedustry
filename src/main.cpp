@@ -22,15 +22,16 @@ void updatePositions();
 
 #define WW 1920
 #define WH 1080
+#define cameraSpeed 120
 
 Build buildmenu = { 0, 0, 128, 256 };
 Button bmbutton1 = { 0, 0, 128, 128 };
 asteroid a1 = { { 0, 0, 64, 64 }, { 30, 30 }, "Fe", "\0"};
 SDL_Point mouse;
 SDL_Rect building{ a1.shell.x + a1.shell.w / 2, a1.shell.y + a1.shell.h / 2, 32, 32 };
-SDL_Rect background = { 0, 0, 7680, 4320 };
+SDL_Rect background = { 0, 0, 3840, 2160 };
 SDL_Rect Camera = { background.x / 2, background.y / 2, WW, WH };
-SDL_Texture *a1_texture, *Backgroung;
+SDL_Texture *a1_texture, *backgroung_texture, *cursor_texture;
 
 
 //=============================================================================
@@ -48,13 +49,14 @@ int main(int argc, char* argv[])
 
 
 	a1_texture = IMG_LoadTexture(gRenderer, "assets/Meteor1.png");
-	Backgroung = IMG_LoadTexture(gRenderer, "assets/Background.png");
+	backgroung_texture = IMG_LoadTexture(gRenderer, "assets/Background.png");
 
 	StartLoop(Update, RenderFrame);
 
 	CleanUp();
 	return 0;
 }
+
 
 //=============================================================================
 void Update(float dt)
@@ -65,14 +67,15 @@ void Update(float dt)
 	if (IsKeyDown(SDL_SCANCODE_ESCAPE))
 		ExitGame();
 
+	//camera movement
 	if (IsKeyDown(SDL_SCANCODE_W))
-		Camera.y--;
+		Camera.y -= cameraSpeed * dt;
 	if (IsKeyDown(SDL_SCANCODE_A))
-		Camera.x--;
+		Camera.x -= cameraSpeed * dt;
 	if (IsKeyDown(SDL_SCANCODE_S))
-		Camera.y++;
+		Camera.y += cameraSpeed * dt;
 	if (IsKeyDown(SDL_SCANCODE_D))
-		Camera.x++;
+		Camera.x += cameraSpeed * dt;
 
 
 	if (SDL_PointInRect(&mouse, &a1.shell) || SDL_PointInRect(&mouse, &buildmenu.shell))
@@ -101,6 +104,7 @@ void Update(float dt)
 	updatePositions();
 }
 
+
 //=============================================================================
 void RenderFrame(float interpolation)
 {
@@ -108,7 +112,7 @@ void RenderFrame(float interpolation)
 	SDL_SetRenderDrawColor(gRenderer, 65, 105, 225, 255);
 	SDL_RenderClear(gRenderer);
 
-	SDL_RenderCopy(gRenderer, Backgroung, 0, &background);
+	SDL_RenderCopy(gRenderer, backgroung_texture, 0, &background);
 
 	SDL_RenderCopy(gRenderer, a1_texture, 0, &a1.shell);
 	if (buildmenu.shown)
@@ -129,6 +133,7 @@ void RenderFrame(float interpolation)
 }
 
 
+//=============================================================================
 void updatePositions() {
 	toCamCords(Camera, { 0, 0 }, &background.x, &background.y);
 	toCamCords(Camera, a1.position, &a1.shell.x, &a1.shell.y);
