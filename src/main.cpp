@@ -153,7 +153,7 @@ void RenderFrame(float interpolation)
 
 //=============================================================================
 void loadAssets() {
-	a1_texture = IMG_LoadTexture(gRenderer, "assets/Meteor1.png");
+	a1_texture = IMG_LoadTexture(gRenderer, "assets/Meteor2.png");
 	backgroung_texture = IMG_LoadTexture(gRenderer, "assets/Background.png");
 }
 
