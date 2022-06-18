@@ -7,3 +7,6 @@
 [submodule "libraries/SDL_ttf"]
 	path = libraries/SDL_ttf
 	url = https://github.com/Buracisko/SDL_ttf.git
+[submodule "libraries/SDL2"]
+	path = libraries/SDL2
+	url = https://github.com/libsdl-org/SDL.git
