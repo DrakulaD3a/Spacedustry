@@ -4,5 +4,5 @@
 
 struct Button {
 	SDL_Rect shell;
-	bool shown = false;
+	bool shown;
 };

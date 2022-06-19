@@ -22,12 +22,12 @@ void updatePositions();
 
 struct Build {
 	SDL_Rect shell;
-	bool shown = false;
+	bool shown;
 };
 
-Build buildmenu = { -999, -999, 128, 256 };
-Button bmbutton1 = { -999, -999, 96, 96 };
-asteroid a[5];
+Build buildmenu = { { -999, -999, 128, 256 }, false };
+Button bmbutton1 = { { -999, -999, 96, 96 }, false };
+asteroid a[5] = { };
 SDL_Point mouse;
 SDL_Rect building[5];
 SDL_Rect background = { 0, 0, 3840, 2160 };
@@ -38,6 +38,7 @@ SDL_Texture *a1_texture, *backgroung_texture, *cursor_texture;
 //=============================================================================
 int main(int argc, char* argv[])
 {
+	srand(time(NULL));
 	if (!InitSDL())
 	{
 		return 1;
@@ -48,7 +49,12 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	a[0] = { { 0, 0, 64, 64 }, { 30, 30 }, "Fe" }, a[1] = { { 0, 0, 64, 64 }, { 16, 100 }, "Fe" }, a[2] = { { 0, 0, 64, 64 }, { 200, 180 }, "Fe" }, a[3] = { { 0, 0, 64, 64 }, { 350, 800 }, "Fe" }, a[4] = { { 0, 0, 64, 64 }, { 546, 145 }, "Fe" };
+
+	for(int i = 0; i < 5; i++)
+	{
+		double x = rand() % 3840, y = rand() % 2160;
+		a[i] = {{ 0, 0, 64, 64 }, { x, y }, "Fe", "none"};
+	}
 
 	loadAssets();
 
@@ -153,7 +159,7 @@ void RenderFrame(float interpolation)
 
 //=============================================================================
 void loadAssets() {
-	a1_texture = IMG_LoadTexture(gRenderer, "assets/Meteor2.png");
+	a1_texture = IMG_LoadTexture(gRenderer, "assets/Meteor1.png");
 	backgroung_texture = IMG_LoadTexture(gRenderer, "assets/Background.png");
 }
 
