@@ -1,6 +1,5 @@
 #include "engine.h"
 #include "asteroid.h"
-#include "button.h"
 #include "SDL.h"
 #include "SDL_image.h"
 #include "SDL_mixer.h"
@@ -30,7 +29,8 @@ unsigned int copper = 0, iron = 0, tungsten = 0, gold = 0;
 
 
 Build buildmenu = { { -999, -999, 128, 256 }, false };
-Button bmbutton1 = { { -999, -999, 96, 96 }, false };
+SDL_Rect button1 = { -999, -999, 96, 96 };
+SDL_Rect button2 = { -999, -999, 96, 16 };
 asteroid a[5];
 SDL_Point mouse;
 SDL_Rect building[5];
@@ -95,15 +95,27 @@ void Update(float dt)
 	{
 		if (SDL_PointInRect(&mouse, &buildmenu.shell))
 		{
-			if (SDL_PointInRect(&mouse, &bmbutton1.shell) && IsMousePressed(SDL_BUTTON_LMASK) && a[i].clicked)
+			if (IsMousePressed(SDL_BUTTON_LMASK) && a[i].clicked)
 			{
-				strcpy(a[i].building, "miner");
-				building[i] = { a[i].shell.x + a[i].shell.w / 2, a[i].shell.y + a[i].shell.h / 2 , 32, 32 };
-				a[i].clicked = false;
-				buildmenu.shown = false;
-				bmbutton1.shown = false;
-				buildmenu.shell.x = -999;
-				bmbutton1.shell.x = -999;
+				if (SDL_PointInRect(&mouse, &button1))
+				{
+					strcpy(a[i].building, "miner");
+					building[i] = { a[i].shell.x + a[i].shell.w / 2, a[i].shell.y + a[i].shell.h / 2 , 32, 32 };
+					a[i].clicked = false;
+					buildmenu.shown = false;
+					buildmenu.shell.x = -999;
+					button1.x = -999;
+					button2.x = -999;
+				}
+				else if (SDL_PointInRect(&mouse, &button2))
+				{
+					strcpy(a[i].building, "none");
+					a[i].clicked = false;
+					buildmenu.shown = false;
+					buildmenu.shell.x = -999;
+					button1.x = -999;
+					button2.x = -999;
+				}
 			}
 		}
 		else if (SDL_PointInRect(&mouse, &a[i].shell))
@@ -112,20 +124,21 @@ void Update(float dt)
 			{
 				a[i].clicked = true;
 				buildmenu.shown = true;
-				bmbutton1.shown = true;
 				buildmenu.shell.x = mouse.x;
 				buildmenu.shell.y = mouse.y;
-				bmbutton1.shell.x = buildmenu.shell.x + 16;
-				bmbutton1.shell.y = buildmenu.shell.y + 16;
+				button1.x = buildmenu.shell.x + 16;
+				button1.y = buildmenu.shell.y + 16;
+				button2.x = buildmenu.shell.x + 16;
+				button2.y = buildmenu.shell.y + 224;
 			}
 		}
 		else
 		{
 			a[i].clicked = false;
 			buildmenu.shown = false;
-			bmbutton1.shown = false;
 			buildmenu.shell.x = -999;
-			bmbutton1.shell.x = -999;
+			button1.x = -999;
+			button2.x = -999;
 		}
 	}
 	updatePositions();
@@ -161,20 +174,20 @@ void RenderFrame(float interpolation)
 	{
 		SDL_SetRenderDrawColor(gRenderer, 225, 225, 225, 255);
 		SDL_RenderFillRect(gRenderer, &buildmenu.shell);
+
+		SDL_SetRenderDrawColor(gRenderer, 225, 0, 0, 255);
+		SDL_RenderFillRect(gRenderer, &button1);
+		SDL_SetRenderDrawColor(gRenderer, 225, 255, 0, 255);
+		SDL_RenderFillRect(gRenderer, &button2);
 	}
 
-	//rendering menu buttons
-	if (bmbutton1.shown)
-	{
-		SDL_SetRenderDrawColor(gRenderer, 225, 0, 0, 255);
-		SDL_RenderFillRect(gRenderer, &bmbutton1.shell);
-	}
+	
 }
 
 //=============================================================================
 void loadAssets() {
 	a1_texture = IMG_LoadTexture(gRenderer, "assets/Meteor1.png");
-	backgroung_texture = IMG_LoadTexture(gRenderer, "assets/Background2.png");
+	backgroung_texture = IMG_LoadTexture(gRenderer, "assets/Background.png");
 }
 
 //=============================================================================
