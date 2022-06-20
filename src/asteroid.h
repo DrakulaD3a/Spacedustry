@@ -7,4 +7,5 @@ struct asteroid {
 	coords position;
 	char resource[16];
 	char building[16];
+	bool clicked;
 };

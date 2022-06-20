@@ -57,7 +57,7 @@ int main(int argc, char* argv[])
 	for(int i = 0; i < 5; i++)
 	{
 		double x = rand() % 3840, y = rand() % 2160;
-		a[i] = {{ 0, 0, 64, 64 }, { x, y }, "Fe", "none"};
+		a[i] = {{ 0, 0, 64, 64 }, { x, y }, "Fe", "none", false};
 	}
 
 	loadAssets();
@@ -92,8 +92,7 @@ void Update(float dt)
 	{
 		if (SDL_PointInRect(&mouse, &buildmenu.shell))
 		{
-			SDL_Rect temp = { a[i].shell.x - 128, a[i].shell.y - 128, a[i].shell.w + 256, a[i].shell.h + 256 };
-			if (SDL_PointInRect(&mouse, &bmbutton1.shell) && IsMousePressed(SDL_BUTTON_LMASK) && SDL_PointInRect(&mouse, &temp))
+			if (SDL_PointInRect(&mouse, &bmbutton1.shell) && IsMousePressed(SDL_BUTTON_LMASK) && a[i].clicked)
 			{
 				strcpy(a[i].building, "miner");
 				building[i] = { a[i].shell.x + a[i].shell.w / 2, a[i].shell.y + a[i].shell.h / 2 , 32, 32 };
@@ -103,6 +102,7 @@ void Update(float dt)
 		{
 			if (IsMousePressed(SDL_BUTTON_LMASK))
 			{
+				a[i].clicked = true;
 				buildmenu.shown = true;
 				bmbutton1.shown = true;
 				buildmenu.shell.x = mouse.x;
