@@ -31,7 +31,7 @@ unsigned int copper = 0, iron = 0, tungsten = 0, gold = 0;
 
 Build buildmenu = { { -999, -999, 128, 256 }, false };
 Button bmbutton1 = { { -999, -999, 96, 96 }, false };
-asteroid a[5] = { };
+asteroid a[5];
 SDL_Point mouse;
 SDL_Rect building[5];
 SDL_Rect background = { 0, 0, 3840, 2160 };
@@ -56,7 +56,7 @@ int main(int argc, char* argv[])
 
 	for(int i = 0; i < 5; i++)
 	{
-		double x = rand() % 3840, y = rand() % 2160;
+		double x = rand() % 3774, y = rand() % 2094;
 		a[i] = {{ 0, 0, 64, 64 }, { x, y }, "Fe", "none", false};
 	}
 
@@ -79,14 +79,17 @@ void Update(float dt)
 		ExitGame();
 
 	//camera movement
-	if (IsKeyDown(SDL_SCANCODE_W))
-		Camera.y -= cameraSpeed * dt;
-	if (IsKeyDown(SDL_SCANCODE_A))
-		Camera.x -= cameraSpeed * dt;
-	if (IsKeyDown(SDL_SCANCODE_S))
-		Camera.y += cameraSpeed * dt;
-	if (IsKeyDown(SDL_SCANCODE_D))
-		Camera.x += cameraSpeed * dt;
+	if (!buildmenu.shown)
+	{
+		if (IsKeyDown(SDL_SCANCODE_W))
+			Camera.y -= cameraSpeed * dt;
+		if (IsKeyDown(SDL_SCANCODE_A))
+			Camera.x -= cameraSpeed * dt;
+		if (IsKeyDown(SDL_SCANCODE_S))
+			Camera.y += cameraSpeed * dt;
+		if (IsKeyDown(SDL_SCANCODE_D))
+			Camera.x += cameraSpeed * dt;
+	}
 
 	for (int i = 0; i < 5; i++)
 	{
@@ -96,6 +99,11 @@ void Update(float dt)
 			{
 				strcpy(a[i].building, "miner");
 				building[i] = { a[i].shell.x + a[i].shell.w / 2, a[i].shell.y + a[i].shell.h / 2 , 32, 32 };
+				a[i].clicked = false;
+				buildmenu.shown = false;
+				bmbutton1.shown = false;
+				buildmenu.shell.x = -999;
+				bmbutton1.shell.x = -999;
 			}
 		}
 		else if (SDL_PointInRect(&mouse, &a[i].shell))
@@ -113,6 +121,7 @@ void Update(float dt)
 		}
 		else
 		{
+			a[i].clicked = false;
 			buildmenu.shown = false;
 			bmbutton1.shown = false;
 			buildmenu.shell.x = -999;
