@@ -12,6 +12,7 @@ set(SOURCES
 	src/coordinates.cpp
 	src/asteroid.h
 	src/button.h
+	src/base.h
 )
 
 source_group("Headers" FILES
@@ -19,6 +20,7 @@ source_group("Headers" FILES
 	src/coordinates.h
 	src/asteroid.h
 	src/button.h
+	src/base.h
 )
 
 # Set a default build type if none was specified
