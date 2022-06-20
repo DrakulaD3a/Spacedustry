@@ -18,6 +18,7 @@ void updatePositions();
 #define WW 1920
 #define WH 1080
 #define cameraSpeed 240
+#define numOfAteroids 32
 
 struct Build {
 	SDL_Rect shell;
@@ -31,9 +32,9 @@ unsigned int copper = 0, iron = 0, tungsten = 0, gold = 0;
 Build buildmenu = { { -999, -999, 128, 256 }, false };
 SDL_Rect button1 = { -999, -999, 96, 96 };
 SDL_Rect button2 = { -999, -999, 96, 16 };
-asteroid a[5];
+asteroid a[numOfAteroids];
 SDL_Point mouse;
-SDL_Rect building[5];
+SDL_Rect building[numOfAteroids];
 SDL_Rect background = { 0, 0, 3840, 2160 };
 SDL_Rect Camera = { background.x / 2, background.y / 2, WW, WH };
 SDL_Texture *a1_texture, *backgroung_texture, *cursor_texture;
@@ -54,7 +55,7 @@ int main(int argc, char* argv[])
 	}
 
 
-	for(int i = 0; i < 5; i++)
+	for(int i = 0; i < numOfAteroids; i++)
 	{
 		double x = rand() % 3774, y = rand() % 2094;
 		a[i] = {{ 0, 0, 64, 64 }, { x, y }, "Fe", "none", false};
@@ -91,7 +92,7 @@ void Update(float dt)
 			Camera.x += cameraSpeed * dt;
 	}
 
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < numOfAteroids; i++)
 	{
 		if (SDL_PointInRect(&mouse, &buildmenu.shell))
 		{
@@ -155,13 +156,10 @@ void RenderFrame(float interpolation)
 	//rendering background
 	SDL_RenderCopy(gRenderer, backgroung_texture, 0, &background);
 
-	//rendering meteor
-	for(int i = 0; i < 5; i++)
-		SDL_RenderCopy(gRenderer, a1_texture, 0, &a[i].shell);
-
 	//rendering miner on meteor
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < numOfAteroids; i++)
 	{
+		SDL_RenderCopy(gRenderer, a1_texture, 0, &a[i].shell);
 		if (strcmp(a[i].building, "miner") == 0)
 		{
 			SDL_SetRenderDrawColor(gRenderer, 225, 0, 0, 255);
@@ -193,7 +191,7 @@ void loadAssets() {
 //=============================================================================
 void updatePositions() {
 	toCamCords(Camera, { 0, 0 }, &background.x, &background.y);
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < numOfAteroids; i++)
 	{
 		toCamCords(Camera, a[i].position, &a[i].shell.x, &a[i].shell.y);
 		toCamCords(Camera, a[i].position, &building[i].x, &building[i].y);
