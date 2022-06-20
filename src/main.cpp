@@ -18,12 +18,16 @@ void updatePositions();
 
 #define WW 1920
 #define WH 1080
-#define cameraSpeed 120
+#define cameraSpeed 240
 
 struct Build {
 	SDL_Rect shell;
 	bool shown;
 };
+
+unsigned int copper = 0, iron = 0, tungsten = 0, gold = 0;
+
+
 
 Build buildmenu = { { -999, -999, 128, 256 }, false };
 Button bmbutton1 = { { -999, -999, 96, 96 }, false };
@@ -88,7 +92,8 @@ void Update(float dt)
 	{
 		if (SDL_PointInRect(&mouse, &buildmenu.shell))
 		{
-			if (SDL_PointInRect(&mouse, &bmbutton1.shell) && IsMousePressed(SDL_BUTTON_LMASK))
+			SDL_Rect temp = { a[i].shell.x - 128, a[i].shell.y - 128, a[i].shell.w + 256, a[i].shell.h + 256 };
+			if (SDL_PointInRect(&mouse, &bmbutton1.shell) && IsMousePressed(SDL_BUTTON_LMASK) && SDL_PointInRect(&mouse, &temp))
 			{
 				strcpy(a[i].building, "miner");
 				building[i] = { a[i].shell.x + a[i].shell.w / 2, a[i].shell.y + a[i].shell.h / 2 , 32, 32 };
