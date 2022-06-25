@@ -2,10 +2,18 @@
 #include "coordinates.h"
 #include "SDL.h"
 
-struct asteroid {
+class asteroid {
+public:
+	static enum building : short {
+		None = 0, Miner
+	};
 	SDL_Rect shell;
 	coords position;
 	char resource[16];
-	char building[16];
 	bool clicked;
+	building build;
+
+	void setBuild(building b) {
+		build = b;
+	}
 };

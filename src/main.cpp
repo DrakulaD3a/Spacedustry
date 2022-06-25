@@ -54,11 +54,10 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-
 	for(int i = 0; i < numOfAteroids; i++)
 	{
 		double x = rand() % 3774, y = rand() % 2094;
-		a[i] = {{ 0, 0, 64, 64 }, { x, y }, "Fe", "none", false};
+		a[i] = {{ 0, 0, 64, 64 }, { x, y }, "Fe", false, asteroid::None};
 	}
 
 	loadAssets();
@@ -100,7 +99,7 @@ void Update(float dt)
 			{
 				if (SDL_PointInRect(&mouse, &button1))
 				{
-					strcpy(a[i].building, "miner");
+					a[i].setBuild(asteroid::Miner);
 					building[i] = { a[i].shell.x + a[i].shell.w / 2, a[i].shell.y + a[i].shell.h / 2 , 32, 32 };
 					a[i].clicked = false;
 					buildmenu.shown = false;
@@ -110,7 +109,7 @@ void Update(float dt)
 				}
 				else if (SDL_PointInRect(&mouse, &button2))
 				{
-					strcpy(a[i].building, "none");
+					a[i].setBuild(asteroid::None);
 					a[i].clicked = false;
 					buildmenu.shown = false;
 					buildmenu.shell.x = -999;
@@ -125,8 +124,26 @@ void Update(float dt)
 			{
 				a[i].clicked = true;
 				buildmenu.shown = true;
-				buildmenu.shell.x = mouse.x;
-				buildmenu.shell.y = mouse.y;
+				if (WW - mouse.x < buildmenu.shell.w && WH - mouse.y < buildmenu.shell.h)
+				{
+					buildmenu.shell.x = mouse.x - buildmenu.shell.w;
+					buildmenu.shell.y = mouse.y - buildmenu.shell.h;
+				}
+				else if (WW - mouse.x < buildmenu.shell.w)
+				{
+					buildmenu.shell.x = mouse.x - buildmenu.shell.w;
+					buildmenu.shell.y = mouse.y;
+				}
+				else if (WH - mouse.y < buildmenu.shell.h)
+				{
+					buildmenu.shell.x = mouse.x;
+					buildmenu.shell.y = mouse.y - buildmenu.shell.h;
+				}
+				else
+				{
+					buildmenu.shell.x = mouse.x;
+					buildmenu.shell.y = mouse.y;
+				}
 				button1.x = buildmenu.shell.x + 16;
 				button1.y = buildmenu.shell.y + 16;
 				button2.x = buildmenu.shell.x + 16;
@@ -160,7 +177,7 @@ void RenderFrame(float interpolation)
 	for (int i = 0; i < numOfAteroids; i++)
 	{
 		SDL_RenderCopy(gRenderer, a1_texture, 0, &a[i].shell);
-		if (strcmp(a[i].building, "miner") == 0)
+		if (a[i].build == asteroid::Miner)
 		{
 			SDL_SetRenderDrawColor(gRenderer, 225, 0, 0, 255);
 			SDL_RenderFillRect(gRenderer, &building[i]);
@@ -178,8 +195,6 @@ void RenderFrame(float interpolation)
 		SDL_SetRenderDrawColor(gRenderer, 225, 255, 0, 255);
 		SDL_RenderFillRect(gRenderer, &button2);
 	}
-
-	
 }
 
 //=============================================================================

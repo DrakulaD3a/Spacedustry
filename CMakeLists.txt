@@ -11,7 +11,6 @@ set(SOURCES
 	src/coordinates.h
 	src/coordinates.cpp
 	src/asteroid.h
-	src/button.h
 	src/base.h
 )
 
