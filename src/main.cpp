@@ -37,7 +37,7 @@ SDL_Point mouse;
 SDL_Rect building[numOfAteroids];
 SDL_Rect background = { 0, 0, 3840, 2160 };
 SDL_Rect Camera = { background.x / 2, background.y / 2, WW, WH };
-SDL_Texture *a1_texture, *backgroung_texture, *cursor_texture;
+SDL_Texture *asteroid::texture, *backgroung_texture;
 
 
 //=============================================================================
@@ -56,8 +56,7 @@ int main(int argc, char* argv[])
 
 	for(int i = 0; i < numOfAteroids; i++)
 	{
-		double x = rand() % 3774, y = rand() % 2094;
-		a[i] = {{ 0, 0, 64, 64 }, { x, y }, "Fe", false, asteroid::None};
+		a[i] = {{ 0, 0, 64, 64 }, { (double)(rand() % 3774), (double)(rand() % 2094) }, "Fe", false, a[i].None};
 	}
 
 	loadAssets();
@@ -73,7 +72,6 @@ int main(int argc, char* argv[])
 void Update(float dt)
 {
 	GetMousePosition(&mouse.x, &mouse.y);
-	printf("%d %d\n", mouse.x, mouse.y);
 
 	if (IsKeyDown(SDL_SCANCODE_ESCAPE))
 		ExitGame();
@@ -99,7 +97,7 @@ void Update(float dt)
 			{
 				if (SDL_PointInRect(&mouse, &button1))
 				{
-					a[i].setBuild(asteroid::Miner);
+					a[i].setBuild(a[i].Miner);
 					building[i] = { a[i].shell.x + a[i].shell.w / 2, a[i].shell.y + a[i].shell.h / 2 , 32, 32 };
 					a[i].clicked = false;
 					buildmenu.shown = false;
@@ -109,7 +107,7 @@ void Update(float dt)
 				}
 				else if (SDL_PointInRect(&mouse, &button2))
 				{
-					a[i].setBuild(asteroid::None);
+					a[i].setBuild(a[i].None);
 					a[i].clicked = false;
 					buildmenu.shown = false;
 					buildmenu.shell.x = -999;
@@ -124,25 +122,15 @@ void Update(float dt)
 			{
 				a[i].clicked = true;
 				buildmenu.shown = true;
-				if (WW - mouse.x < buildmenu.shell.w && WH - mouse.y < buildmenu.shell.h)
+				buildmenu.shell.x = mouse.x;
+				buildmenu.shell.y = mouse.y;
+				if (WW - mouse.x < buildmenu.shell.w)
 				{
 					buildmenu.shell.x = mouse.x - buildmenu.shell.w;
+				}
+				if (WH - mouse.y < buildmenu.shell.h)
+				{
 					buildmenu.shell.y = mouse.y - buildmenu.shell.h;
-				}
-				else if (WW - mouse.x < buildmenu.shell.w)
-				{
-					buildmenu.shell.x = mouse.x - buildmenu.shell.w;
-					buildmenu.shell.y = mouse.y;
-				}
-				else if (WH - mouse.y < buildmenu.shell.h)
-				{
-					buildmenu.shell.x = mouse.x;
-					buildmenu.shell.y = mouse.y - buildmenu.shell.h;
-				}
-				else
-				{
-					buildmenu.shell.x = mouse.x;
-					buildmenu.shell.y = mouse.y;
 				}
 				button1.x = buildmenu.shell.x + 16;
 				button1.y = buildmenu.shell.y + 16;
@@ -176,8 +164,8 @@ void RenderFrame(float interpolation)
 	//rendering miner on meteor
 	for (int i = 0; i < numOfAteroids; i++)
 	{
-		SDL_RenderCopy(gRenderer, a1_texture, 0, &a[i].shell);
-		if (a[i].build == asteroid::Miner)
+		SDL_RenderCopy(gRenderer, asteroid::texture, 0, &a[i].shell);
+		if (a[i].build == a[i].Miner)
 		{
 			SDL_SetRenderDrawColor(gRenderer, 225, 0, 0, 255);
 			SDL_RenderFillRect(gRenderer, &building[i]);
@@ -199,8 +187,8 @@ void RenderFrame(float interpolation)
 
 //=============================================================================
 void loadAssets() {
-	a1_texture = IMG_LoadTexture(gRenderer, "assets/Meteor1.png");
-	backgroung_texture = IMG_LoadTexture(gRenderer, "assets/Background.png");
+	asteroid::texture = IMG_LoadTexture(gRenderer, "assets/Meteor1.png");
+	backgroung_texture = IMG_LoadTexture(gRenderer, "assets/Background2.png");
 }
 
 //=============================================================================

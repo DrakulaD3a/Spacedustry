@@ -4,7 +4,7 @@
 
 class asteroid {
 public:
-	static enum building : short {
+	enum building : short {
 		None = 0, Miner
 	};
 	SDL_Rect shell;
@@ -12,6 +12,8 @@ public:
 	char resource[16];
 	bool clicked;
 	building build;
+	static SDL_Texture* texture;
+	
 
 	void setBuild(building b) {
 		build = b;
